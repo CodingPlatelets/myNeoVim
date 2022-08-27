@@ -6,18 +6,21 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'preservim/nerdtree'
 Plug 'f-person/git-blame.nvim'
 Plug 'airblade/vim-gitgutter'
+Plug 'terryma/vim-multiple-cursors'
 Plug 'morhetz/gruvbox'
+Plug 'easymotion/vim-easymotion'
 call plug#end()
-
 
 
 set background=dark
 set clipboard=unnamedplus
+set clipboard=unnamed
 set completeopt=noinsert,menuone,noselect
 set cursorline
 set hidden
 set inccommand=split
 set number
+set nu
 set relativenumber
 set expandtab
 set shiftwidth=4
@@ -31,24 +34,29 @@ let g:airline_theme='sobrio'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 
-nnoremap <C-w> :bd<CR>
+let mapleader = ";"
 nnoremap <S-Tab> gT
 nnoremap <Tab> gt
-nnoremap <C-n> :NERDTree<CR>
-nnoremap <C-f> :NERDTreeFind<CR>
+nnoremap <Leader>n :NERDTree<CR>
+nnoremap <Leader>f :NERDTreeFind<CR>
 nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
-nmap p :pu<CR>
+nnoremap <Leader>q :q<CR>
+nnoremap <Leader>w :w<CR>
+" nmap p :pu<CR>
 
+nmap f <Plug>(easymotion-s)
+let g:EasyMotion_smartcase = 1
 
 " Start NERDTree and leave the cursor in it.
-autocmd StdinReadPre * let s:std_in=1
+" autocmd StdnnoremapinReadPre * let s:std_nnoremapin=1
 autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
+colorscheme gruvbox
 
-
+" Default mappnnoremaping
 
 "Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
-"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
+"If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color upport
 "(see < http://sunaku.github.io/tmux-24bit-color.html#usage > for more information.)
 if (empty($TMUX))
   if (has("nvim"))
