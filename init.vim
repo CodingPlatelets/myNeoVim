@@ -1,20 +1,19 @@
 
 call plug#begin('~/AppData/Local/nvim/plugged')
-Plug 'joshdick/onedark.vim'
 Plug 'iCyMind/NeoSolarized'
 Plug 'ryanoasis/vim-devicons'
 Plug 'preservim/nerdtree'
 Plug 'f-person/git-blame.nvim'
 Plug 'airblade/vim-gitgutter'
-Plug 'terryma/vim-multiple-cursors'
 Plug 'morhetz/gruvbox'
+Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'easymotion/vim-easymotion'
 call plug#end()
 
 
 set background=dark
 set clipboard=unnamedplus
-set clipboard=unnamed
+" set clipboard=unnamed
 set completeopt=noinsert,menuone,noselect
 set cursorline
 set hidden
@@ -49,8 +48,11 @@ nmap f <Plug>(easymotion-s)
 let g:EasyMotion_smartcase = 1
 
 " Start NERDTree and leave the cursor in it.
-" autocmd StdnnoremapinReadPre * let s:std_nnoremapin=1
 autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
+autocmd BufWrite * mkview
+autocmd BufWinLeave * mkview
+autocmd BufRead * silent loadview
+
 colorscheme gruvbox
 
 " Default mappnnoremaping
