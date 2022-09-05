@@ -1,0 +1,50 @@
+set hlsearch
+set scrolloff=3
+set ignorecase smartcase
+set showmode
+set history=1000
+set scrolloff=5
+
+"" -- Map IDE actions to IdeaVim -- https://jb.gg/abva4t
+"" Map \r to the Reformat Code action
+"map \r <Action>(ReformatCode)
+
+"" Map <leader>d to start debug
+"map <leader>d <Action>(Debug)
+
+"" Map \b to toggle the breakpoint on the current line
+"map \b <Action>(ToggleLineBreakpoint)
+
+se nocompatible
+set hlsearch                    " highlight searches
+set incsearch                   " do incremental searching, search as you type
+set ignorecase                  " ignore case when searching
+set smartcase                   " no ignorecase if Uppercase char present
+set clipboard=unnamedplus  " 使用系统粘贴板(vim用y粘贴的内容也可以通过command + c 粘贴)
+" 启用vim surround功能
+set surround
+" 启用multi cursor
+set multiple-cursors
+set nu
+set relativenumber
+set keep-english-in-normal-and-restore-in-insert
+set easymotion
+set surround
+set multiple-cursors
+set argtextobj
+set textobj-entire
+set highlightedyank
+set textobj-indent
+" Find more examples here: https://jb.gg/share-ideavimrc
+nmap f <Plug>(easymotion-s)
+let mapleader = ";"
+nmap <Leader>b :bd<CR>
+nnoremap <Leader>q :q<CR>
+nnoremap <Leader>w :w<CR>
+nmap <Leader>l <Action>(NextTab)
+nmap <Leader>h <Action>(PreviousTab)
+nmap <C-S> <Action>(ReformatCode)
+" Quickly surround with "" [] {}
+nmap "" ysiw"
+nmap [[ ysiw[
+nmap {{ ysiw{
