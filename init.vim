@@ -4,7 +4,7 @@ else
 " ordinary Neovim
 endif
 
-call plug#begin('~/AppData/Local/nvim/plugged')
+call plug#begin('~/.config/nvim/plugged')
 Plug 'iCyMind/NeoSolarized'
 Plug 'ryanoasis/vim-devicons'
 Plug 'preservim/nerdtree'
@@ -210,7 +210,7 @@ lua <<EOF
   })
 
   -- Set up lspconfig.
-  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+  local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
   -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
   require('lspconfig').clangd.setup {
     capabilities = capabilities
@@ -265,7 +265,7 @@ cmp.setup({
 })
 
 
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities()) --nvim-cmp
+local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities()) --nvim-cmp
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 local on_attach = function(client, bufnr)
