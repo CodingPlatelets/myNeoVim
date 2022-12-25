@@ -14,6 +14,7 @@ Plug 'morhetz/gruvbox'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'easymotion/vim-easymotion' 
 Plug 'tpope/vim-surround'
+Plug 'preservim/nerdcommenter'
 
 Plug 'prabirshrestha/vim-lsp'
 Plug 'mattn/vim-lsp-settings'
@@ -25,6 +26,11 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-cmdline'
 Plug 'hrsh7th/nvim-cmp'
+Plug 'hrsh7th/cmp-emoji'
+Plug 'f3fora/cmp-spell'
+Plug 'kana/vim-operator-user'
+Plug 'p00f/clangd_extensions.nvim'
+Plug 'rhysd/vim-clang-format'
 
 " For vsnip users.
 Plug 'hrsh7th/cmp-vsnip'
@@ -43,8 +49,8 @@ set number
 set nu
 set relativenumber
 set expandtab
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=2
+set tabstop=2
 set mouse=a
 set cc=80
 set hlsearch
@@ -59,22 +65,57 @@ nnoremap <S-Tab> gT
 nnoremap <Tab> gt
 nnoremap <Leader>n :NERDTree<CR>
 nnoremap <Leader>f :NERDTreeFind<CR>
-nnoremap <leader>n :NERDTreeFocus<CR>
+nnoremap <Leader>n :NERDTreeFocus<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
-nnoremap <Leader>q :q<CR>
 nnoremap <Leader>w :w<CR>
+nnoremap <Leader>qq :quitall<CR>
 " nmap p :pu<CR>
+" code action for lsp
+nnoremap <A-CR> :lua vim.lsp.buf.code_action()<CR>
 
 nmap f <Plug>(easymotion-s)
+nnoremap <A>f :ClangFormat<CR>
+
+autocmd FileType c,cpp,objc ClangFormatAutoEnable
 let g:EasyMotion_smartcase = 1
 
 " Start NERDTree and leave the cursor in it.
-" autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
+autocmd VimEnter * if argc() == 0 && !exists('s:std_in') | NERDTree | endif
 " autocmd BufWrite * mkview
 " autocmd BufWinLeave * mkview
 " autocmd BufRead * silent loadview
 
 colorscheme gruvbox
+filetype plugin on
+
+" for nerdcommenter config
+" Create default mappings
+let g:NERDCreateDefaultMappings = 1
+
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+
+" Set a language to use its alternate delimiters by default
+let g:NERDAltDelims_java = 1
+
+" Add your own custom formats or override the defaults
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+" Enable NERDCommenterToggle to check all selected lines is commented or not 
+let g:NERDToggleCheckAllLines = 1
+
 
 
 " Default mappnnoremaping
@@ -118,6 +159,7 @@ function! s:on_lsp_buffer_enabled() abort
     nmap <buffer> [g <plug>(lsp-previous-diagnostic)
     nmap <buffer> ]g <plug>(lsp-next-diagnostic)
     nmap <buffer> K <plug>(lsp-hover)
+    nmap <buffer> <space>f <plug>(lsp-format)
     nnoremap <buffer> <expr><c-f> lsp#scroll(+4)
     nnoremap <buffer> <expr><c-d> lsp#scroll(-4)
 
@@ -159,6 +201,18 @@ lua <<EOF
         -- require('snippy').expand_snippet(args.body) -- For `snippy` users.
         -- vim.fn["UltiSnips#Anon"](args.body) -- For `ultisnips` users.
       end,
+    },
+    sort = {
+         comparators = {
+            cmp.config.compare.offset,
+            cmp.config.compare.exact,
+            cmp.config.compare.recently_used,
+            require("clangd_extensions.cmp_scores"),
+            cmp.config.compare.kind,
+            cmp.config.compare.sort_text,
+            cmp.config.compare.length,
+            cmp.config.compare.order,
+        },    
     },
     window = {
       -- completion = cmp.config.window.bordered(),
@@ -212,9 +266,11 @@ lua <<EOF
   -- Set up lspconfig.
   local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
   -- Replace <YOUR_LSP_SERVER> with each lsp server you've enabled.
-  require('lspconfig').clangd.setup {
+  require('lspconfig')['clangd'].setup {
     capabilities = capabilities
   }
+
+  require('clangd_extensions').setup()
 
   -- golang config
 local has_words_before = function()
