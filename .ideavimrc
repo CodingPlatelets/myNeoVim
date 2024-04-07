@@ -30,21 +30,27 @@ set relativenumber
 set keep-english-in-normal-and-restore-in-insert
 set easymotion
 set surround
-set multiple-cursors
 set argtextobj
 set textobj-entire
 set highlightedyank
 set textobj-indent
+
 " Find more examples here: https://jb.gg/share-ideavimrc
 nmap f <Plug>(easymotion-s)
 let mapleader = ";"
 nmap <Leader>b :bd<CR>
+map <S-Space> <Action>(GotoNextError)
 nnoremap <Leader>q :q<CR>
 nnoremap <Leader>w :w<CR>
 nmap <Leader>l <Action>(NextTab)
 nmap <Leader>h <Action>(PreviousTab)
 nmap <C-S> <Action>(ReformatCode)
+nmap <C-o> :action Back<CR>
+
 " Quickly surround with "" [] {}
 nmap "" ysiw"
 nmap [[ ysiw[
 nmap {{ ysiw{
+nmap '' ysiw'
+nmap (( ysiw(
+nmap `` ysiw`
